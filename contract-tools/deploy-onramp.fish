@@ -16,9 +16,9 @@ function deploy-onramp
 	# Build bytecode from source
 	cd $ONRAMP_CODE_PATH
 	npx hardhat compile
-	set bcProver (get-bytecode contracts/destChain/Prover.sol/DealClient.json)
-	set bcOracle (get-bytecode contracts/sourceChain/Oracles.sol/ForwardingProofMockBridge.json)
-	set bcOnRamp (get-bytecode contracts/sourceChain/OnRamp.sol/OnRampContract.json)
+	set bcProver (get-bytecode artifacts/contracts/destChain/Prover.sol/DealClient.json)
+	set bcOracle (get-bytecode artifacts/contracts/sourceChain/Oracles.sol/ForwardingProofMockBridge.json)
+	set bcOnRamp (get-bytecode artifacts/contracts/sourceChain/OnRamp.sol/OnRampContract.json)
 
 	# Deploy contracts to local network
 	cd $LOTUS_EXEC_PATH
@@ -117,10 +117,10 @@ function parse-filecoin-address
 end
 function deploy-tokens
 	 cd $ONRAMP_CODE_PATH
-	 forge build
-	 set bcNickle (get-bytecode out/Token.sol/Nickle.json)
-	 set bcCowry (get-bytecode out/Token.sol/BronzeCowry.json)
-	 set bcPound (get-bytecode out/Token.sol/DebasedTowerPoundSterling.json)
+	 npx hardhat compile
+	 set bcNickle (get-bytecode artifacts/contracts/Token.sol/Nickle.json)
+	 set bcCowry (get-bytecode artifacts/contracts/Token.sol/BronzeCowry.json)
+	 set bcPound (get-bytecode artifacts/contracts/Token.sol/DebasedTowerPoundSterling.json)
 
 	 # Approve 10^9 tokens allowance for onramp contract
 	 set approveCallData (cast calldata "approve(address,uint256)" $argv[1] 1000000000)
