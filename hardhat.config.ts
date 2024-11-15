@@ -35,6 +35,11 @@ const config: HardhatUserConfig = {
       url: "https://rpc.sepolia.linea.build",
       chainId: 59141,
       accounts: [deployerPrivateKey],
+    },
+    coston2: {
+      url: "https://rpc.ankr.com/flare_coston2",
+      chainId: 114,
+      accounts: [deployerPrivateKey]
     }
   }
 };
