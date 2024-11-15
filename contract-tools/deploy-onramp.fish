@@ -15,7 +15,7 @@
 function deploy-onramp
 	# Build bytecode from source
 	cd $ONRAMP_CODE_PATH
-	forge build
+	npx hardhat compile
 	set bcProver (get-bytecode contracts/destChain/Prover.sol/DealClient.json)
 	set bcOracle (get-bytecode contracts/sourceChain/Oracles.sol/ForwardingProofMockBridge.json)
 	set bcOnRamp (get-bytecode contracts/sourceChain/OnRamp.sol/OnRampContract.json)
