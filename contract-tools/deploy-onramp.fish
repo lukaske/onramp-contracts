@@ -17,7 +17,7 @@ function deploy-onramp
 	cd $ONRAMP_CODE_PATH
 	forge build
 	set bcProver (get-bytecode /home/ubuntu/onramp-contracts/out/Prover.sol/DealClient.json)
-	set bcOracle (get-bytecode /home/ubuntu/onramp-contractsout/Oracles.sol/ForwardingProofMockBridge.json)
+	set bcOracle (get-bytecode /home/ubuntu/onramp-contracts/out/Oracles.sol/ForwardingProofMockBridge.json)
 	set bcOnRamp (get-bytecode /home/ubuntu/onramp-contracts/out/OnRamp.sol/OnRampContract.json)
 
 	# Deploy contracts to local network
@@ -58,15 +58,15 @@ function deploy-onramp
 	# Wire contracts up together
 	echo -e "~*~*~Connect Oracle to Prover\n"
 	set calldataProver (cast calldata "setBridgeContract(address)" $oracleAddr)
-	./lotus evm invoke $proverIDAddr $calldataProver
+	lotus evm invoke $proverIDAddr $calldataProver
 
 	echo -e "\n~*~*~Connect Oracle to OnRamp\n"
 	set calldataOnRamp (cast calldata "setOracle(address)" $oracleAddr)
-	./lotus evm invoke $onrampIDAddr $calldataOnRamp
+	lotus evm invoke $onrampIDAddr $calldataOnRamp
 
 	echo -e "\n~*~*~Connect Prover and OnRamp to Oracle\n"
 	set callDataOracle (cast calldata "setSenderReceiver(string,address)" $proverAddr $onrampAddr)
-	./lotus evm invoke $oracleIDAddr $callDataOracle
+	lotus evm invoke $oracleIDAddr $callDataOracle
 
 	# Setup xchain config
 	mkdir -p ~/.xchain
@@ -75,7 +75,7 @@ function deploy-onramp
 	# Parse address from eth keystore file 
 	set clientAddr (cat $XCHAIN_KEY_PATH | jq '.address' | sed -e 's/\"//g')
 	echo "clientAddr: $clientAddr"
-	set filClientAddr (parse-filecoin-address (./lotus evm stat $clientAddr))
+	set filClientAddr (parse-filecoin-address (lotus evm stat $clientAddr))
 	echo "filClientAddr: $filClientAddr"
 
 	#./lotus state wait-msg --timeout "2m" (./lotus send $filClientAddr 20)
