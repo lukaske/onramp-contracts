@@ -16,18 +16,18 @@ function deploy-onramp
 	# Build bytecode from source
 	cd $ONRAMP_CODE_PATH
 	forge build
-	set bcProver (get-bytecode out/Prover.sol/DealClient.json)
-	set bcOracle (get-bytecode out/Oracles.sol/ForwardingProofMockBridge.json)
-	set bcOnRamp (get-bytecode out/OnRamp.sol/OnRampContract.json)
+	set bcProver (get-bytecode /home/ubuntu/onramp-contracts/out/Prover.sol/DealClient.json)
+	set bcOracle (get-bytecode /home/ubuntu/onramp-contractsout/Oracles.sol/ForwardingProofMockBridge.json)
+	set bcOnRamp (get-bytecode /home/ubuntu/onramp-contracts/out/OnRamp.sol/OnRampContract.json)
 
 	# Deploy contracts to local network
 	cd $LOTUS_EXEC_PATH
 	echo $bcProver > prover.bytecode
 	echo $bcOracle > oracle.bytecode
 	echo $bcOnRamp > onramp.bytecode
-	set proverOut (./lotus evm deploy --hex prover.bytecode)
-	set oracleOut (./lotus evm deploy --hex oracle.bytecode)
-	set onrampOut (./lotus evm deploy --hex onramp.bytecode)
+	set proverOut (lotus evm deploy --hex prover.bytecode)
+	set oracleOut (lotus evm deploy --hex oracle.bytecode)
+	set onrampOut (lotus evm deploy --hex onramp.bytecode)
 
 	set proverIDAddr (parse-id-address $proverOut)
 	set oracleIDAddr (parse-id-address $oracleOut)
@@ -80,7 +80,7 @@ function deploy-onramp
 
 	#./lotus state wait-msg --timeout "2m" (./lotus send $filClientAddr 20)
 	cd $ONRAMP_CODE_PATH
-	jq -c '.abi' out/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
+	jq -c '.abi' /home/ubuntu/onramp-contracts/out/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
 
     # chain id and lotus api url is hard coded and will be a source of bugs when moved away from calibnet
 	jo -a (jo -- ChainID=314159 Api="$XCHAIN_ETH_API" -s OnRampAddress="$onrampAddr" \
@@ -118,9 +118,9 @@ end
 function deploy-tokens
 	 cd $ONRAMP_CODE_PATH
 	 forge build
-	 set bcNickle (get-bytecode out/Token.sol/Nickle.json)
-	 set bcCowry (get-bytecode out/Token.sol/BronzeCowry.json)
-	 set bcPound (get-bytecode out/Token.sol/DebasedTowerPoundSterling.json)
+	 set bcNickle (get-bytecode /home/ubuntu/onramp-contracts/out/Token.sol/Nickle.json)
+	 set bcCowry (get-bytecode /home/ubuntu/onramp-contracts/out/Token.sol/BronzeCowry.json)
+	 set bcPound (get-bytecode /home/ubuntu/onramp-contracts/out/Token.sol/DebasedTowerPoundSterling.json)
 
 	 # Approve 10^9 tokens allowance for onramp contract
 	 set approveCallData (cast calldata "approve(address,uint256)" $argv[1] 1000000000)
