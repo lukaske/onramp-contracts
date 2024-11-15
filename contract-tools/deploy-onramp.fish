@@ -16,9 +16,9 @@ function deploy-onramp
 	# Build bytecode from source
 	cd $ONRAMP_CODE_PATH
 	forge build
-	set bcProver (get-bytecode out/Prover.sol/DealClient.json)
-	set bcOracle (get-bytecode out/Oracles.sol/ForwardingProofMockBridge.json)
-	set bcOnRamp (get-bytecode out/OnRamp.sol/OnRampContract.json)
+	set bcProver (get-bytecode contracts/destChain/Prover.sol/DealClient.json)
+	set bcOracle (get-bytecode contracts/sourceChain/Oracles.sol/ForwardingProofMockBridge.json)
+	set bcOnRamp (get-bytecode contracts/sourceChain/OnRamp.sol/OnRampContract.json)
 
 	# Deploy contracts to local network
 	cd $LOTUS_EXEC_PATH
