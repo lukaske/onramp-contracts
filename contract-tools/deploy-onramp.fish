@@ -80,7 +80,7 @@ function deploy-onramp
 
 	#./lotus state wait-msg --timeout "2m" (./lotus send $filClientAddr 20)
 	cd $ONRAMP_CODE_PATH
-	jq -c '.abi' out/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
+	jq -c '.abi' artifacts/contracts/sourceChain/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
 
     # chain id and lotus api url is hard coded and will be a source of bugs when moved away from calibnet
 	jo -a (jo -- ChainID=314159 Api="$XCHAIN_ETH_API" -s OnRampAddress="$onrampAddr" \
@@ -95,7 +95,7 @@ end
 #  $argv[1] path to compiled file
 function get-bytecode
 	 # Strip extra jq quotes and "0x" 
-	 jq '.bytecode.object' $argv[1] | sed -e 's/0x//g ; s/\"//g'
+	 jq '.bytecode' $argv[1] | sed -e 's/0x//g ; s/\"//g'
 end
 
 #  $argv string output of lotus evm deploy 
