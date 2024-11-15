@@ -22,12 +22,12 @@ function deploy-onramp
 
 	# Deploy contracts to local network
 	cd $LOTUS_EXEC_PATH
-	echo $bcProver > prover.bytecode
-	echo $bcOracle > oracle.bytecode
-	echo $bcOnRamp > onramp.bytecode
-	set proverOut (lotus evm deploy --hex prover.bytecode)
-	set oracleOut (lotus evm deploy --hex oracle.bytecode)
-	set onrampOut (lotus evm deploy --hex onramp.bytecode)
+	echo $bcProver > /home/ubuntu/onramp-contracts/prover.bytecode
+	echo $bcOracle > /home/ubuntu/onramp-contracts/oracle.bytecode
+	echo $bcOnRamp > /home/ubuntu/onramp-contracts/onramp.bytecode
+	set proverOut (lotus evm deploy --hex /home/ubuntu/onramp-contracts/prover.bytecode)
+	set oracleOut (lotus evm deploy --hex /home/ubuntu/onramp-contracts/oracle.bytecode)
+	set onrampOut (lotus evm deploy --hex /home/ubuntu/onramp-contracts/onramp.bytecode)
 
 	set proverIDAddr (parse-id-address $proverOut)
 	set oracleIDAddr (parse-id-address $oracleOut)
@@ -126,9 +126,9 @@ function deploy-tokens
 	 set approveCallData (cast calldata "approve(address,uint256)" $argv[1] 1000000000)
 
 	 cd $LOTUS_EXEC_PATH
-	 echo $bcNickle > nickle.bytecode
-	 echo $bcCowry > cowry.bytecode
-	 echo $bcPound > pound.bytecode
+	 echo $bcNickle > /home/ubuntu/onramp-contracts/nickle.bytecode
+	 echo $bcCowry > /home/ubuntu/onramp-contracts/cowry.bytecode
+	 echo $bcPound > /home/ubuntu/onramp-contracts/pound.bytecode
 
 	 ascii-five
 	 echo -e "~$0.05~$0.05~ 'NICKLE' ~$0.05~$0.05~\n"
