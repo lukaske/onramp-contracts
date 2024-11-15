@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Set environment variables
 export ONRAMP_CODE_PATH=$(pwd)
 export LOTUS_EXEC_PATH=/usr/local/bin/
 export BOOST_EXEC_PATH=/usr/local/bin/
@@ -5,3 +8,6 @@ export XCHAIN_KEY_PATH=/home/ubuntu/onramp-contracts/xchain_key.json/UTC--2024-1
 export XCHAIN_PASSPHRASE=jabuk123
 export XCHAIN_ETH_API="http://127.0.0.1:1234/rpc/v1"
 export MINER_ADDRESS=t01013
+
+# Print a message confirming the environment variables are set
+echo "Environment variables have been set."
