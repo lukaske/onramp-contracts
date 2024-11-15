@@ -15,10 +15,10 @@
 function deploy-onramp
 	# Build bytecode from source
 	cd $ONRAMP_CODE_PATH
-	npx hardhat compile
-	set bcProver (get-bytecode artifacts/contracts/destChain/Prover.sol/DealClient.json)
-	set bcOracle (get-bytecode artifacts/contracts/sourceChain/Oracles.sol/ForwardingProofMockBridge.json)
-	set bcOnRamp (get-bytecode artifacts/contracts/sourceChain/OnRamp.sol/OnRampContract.json)
+	forge build
+	set bcProver (get-bytecode out/Prover.sol/DealClient.json)
+	set bcOracle (get-bytecode out/Oracles.sol/ForwardingProofMockBridge.json)
+	set bcOnRamp (get-bytecode out/OnRamp.sol/OnRampContract.json)
 
 	# Deploy contracts to local network
 	cd $LOTUS_EXEC_PATH
@@ -80,7 +80,7 @@ function deploy-onramp
 
 	#./lotus state wait-msg --timeout "2m" (./lotus send $filClientAddr 20)
 	cd $ONRAMP_CODE_PATH
-	jq -c '.abi' artifacts/contracts/sourceChain/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
+	jq -c '.abi' out/OnRamp.sol/OnRampContract.json > ~/.xchain/onramp-abi.json
 
     # chain id and lotus api url is hard coded and will be a source of bugs when moved away from calibnet
 	jo -a (jo -- ChainID=314159 Api="$XCHAIN_ETH_API" -s OnRampAddress="$onrampAddr" \
@@ -95,7 +95,7 @@ end
 #  $argv[1] path to compiled file
 function get-bytecode
 	 # Strip extra jq quotes and "0x" 
-	 jq '.bytecode' $argv[1] | sed -e 's/0x//g ; s/\"//g'
+	 jq '.bytecode.object' $argv[1] | sed -e 's/0x//g ; s/\"//g'
 end
 
 #  $argv string output of lotus evm deploy 
@@ -117,10 +117,10 @@ function parse-filecoin-address
 end
 function deploy-tokens
 	 cd $ONRAMP_CODE_PATH
-	 npx hardhat compile
-	 set bcNickle (get-bytecode artifacts/contracts/Token.sol/Nickle.json)
-	 set bcCowry (get-bytecode artifacts/contracts/Token.sol/BronzeCowry.json)
-	 set bcPound (get-bytecode artifacts/contracts/Token.sol/DebasedTowerPoundSterling.json)
+	 forge build
+	 set bcNickle (get-bytecode out/Token.sol/Nickle.json)
+	 set bcCowry (get-bytecode out/Token.sol/BronzeCowry.json)
+	 set bcPound (get-bytecode out/Token.sol/DebasedTowerPoundSterling.json)
 
 	 # Approve 10^9 tokens allowance for onramp contract
 	 set approveCallData (cast calldata "approve(address,uint256)" $argv[1] 1000000000)
