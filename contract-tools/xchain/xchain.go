@@ -566,14 +566,17 @@ func (a *aggregator) runAggregate(ctx context.Context) error {
 					ids[i] = pending[i].OfferID
 					inclProofs[i] = podsi.ProofSubtree // Only do data proofs on chain for now not index proofs
 				}
+				log.Printf("Point 1")
 				aggCommp, err := agg.PieceCID()
 				if err != nil {
 					return err
 				}
+				log.Printf("Point 2")
 				tx, err := a.onramp.Transact(a.auth, "commitAggregate", aggCommp.Bytes(), ids, inclProofs, a.payoutAddr)
 				if err != nil {
 					return err
 				}
+				log.Printf("Point 3")
 				receipt, err := bind.WaitMined(ctx, a.client, tx)
 				if err != nil {
 					return err
