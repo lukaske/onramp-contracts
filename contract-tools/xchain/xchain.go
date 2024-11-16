@@ -255,10 +255,12 @@ type Offer struct {
 func (o *Offer) Piece() (filabi.PieceInfo, error) {
 	pps := filabi.PaddedPieceSize(o.Size)
 	if err := pps.Validate(); err != nil {
+		log.Printf("validation of cid failed: %v", err)
 		return filabi.PieceInfo{}, err
 	}
 	_, c, err := cid.CidFromBytes(o.CommP)
 	if err != nil {
+		log.Printf("retrieval of cid from bytes failed: %v", err)
 		return filabi.PieceInfo{}, err
 	}
 	return filabi.PieceInfo{
