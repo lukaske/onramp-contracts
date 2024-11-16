@@ -572,7 +572,6 @@ func (a *aggregator) runAggregate(ctx context.Context) error {
 					return err
 				}
 				log.Printf("Point 2")
-				log.Printf(a.auth)
 				tx, err := a.onramp.Transact(a.auth, "commitAggregate", aggCommp.Bytes(), ids, inclProofs, a.payoutAddr)
 				if err != nil {
 					return err
