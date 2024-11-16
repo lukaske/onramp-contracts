@@ -689,7 +689,7 @@ func (a *aggregator) sendDeal(ctx context.Context, aggCommp cid.Cid, transferID 
 			Provider:             a.spActorAddr,
 			StartEpoch:           dealStart,
 			EndEpoch:             dealEnd,
-			StoragePricePerEpoch: fbig.NewInt(0),
+			StoragePricePerEpoch: fbig.NewInt(10000000000),
 			ProviderCollateral:   providerCollateral,
 			Label:                dealLabel,
 		},
