@@ -487,7 +487,7 @@ const (
 	// libp2p identifier for latest deal protocol
 	DealProtocolv120 = "/fil/storage/mk/1.2.0"
 	// Delay to start deal at. For 2k devnet 4 second block time this is 13.3 minutes TODO Config
-	dealDelayEpochs = 500
+	dealDelayEpochs = 300
 	// Storage deal duration, TODO figure out what to do about this, either comes from offer or config
 	dealDuration = 518400 // 6 months (on mainnet)
 )
@@ -639,26 +639,30 @@ func (a *aggregator) sendDeal(ctx context.Context, aggCommp cid.Cid, transferID 
 	transferParams := boosttypes2.HttpRequest{
 		URL: fmt.Sprintf("http://%s/?id=%d", a.transferAddr, transferID),
 	}
+	log.Printf("Point 4")
 	paramsBytes, err := json.Marshal(transferParams)
 	if err != nil {
 		return fmt.Errorf("failed to marshal transfer params: %w", err)
 	}
+	log.Printf("Point 5")
 	transfer := boosttypes.Transfer{
 		Type:     "http",
 		ClientID: fmt.Sprintf("%d", transferID),
 		Params:   paramsBytes,
 		Size:     a.targetDealSize - a.targetDealSize/128, // aggregate for transfer is not fr32 encoded
 	}
-
+	log.Printf("Point 6")
 	bounds, err := a.lotusAPI.StateDealProviderCollateralBounds(ctx, filabi.PaddedPieceSize(a.targetDealSize), false, lotustypes.EmptyTSK)
 	if err != nil {
 		return fmt.Errorf("failed to get collateral bounds: %w", err)
 	}
+	log.Printf("Point 7")
 	providerCollateral := fbig.Div(fbig.Mul(bounds.Min, fbig.NewInt(6)), fbig.NewInt(5)) // add 20% as boost client does
 	tipset, err := a.lotusAPI.ChainHead(ctx)
 	if err != nil {
 		return fmt.Errorf("cannot get chain head: %w", err)
 	}
+	log.Printf("Point 8")
 	filHeight := tipset.Height()
 	dealStart := filHeight + dealDelayEpochs
 	dealEnd := dealStart + dealDuration
@@ -680,6 +684,8 @@ func (a *aggregator) sendDeal(ctx context.Context, aggCommp cid.Cid, transferID 
 	if err != nil {
 		return fmt.Errorf("failed to create deal label: %w", err)
 	}
+	log.Printf("Point 9")
+
 	proposal := market.ClientDealProposal{
 		Proposal: market.DealProposal{
 			PieceCID:             aggCommp,
@@ -709,13 +715,14 @@ func (a *aggregator) sendDeal(ctx context.Context, aggCommp cid.Cid, transferID 
 		RemoveUnsealedCopy: false,
 		SkipIPNIAnnounce:   false,
 	}
-
+	log.Printf("Point 10")
 	s, err := a.host.NewStream(ctx, a.spDealAddr.ID, DealProtocolv120)
 	if err != nil {
 		return err
 	}
+	log.Printf("Point 11")
 	defer s.Close()
-
+	log.Printf("Point 12")
 	var resp boosttypes.DealResponse
 	if err := doRpc(ctx, s, &dealParams, &resp); err != nil {
 		return fmt.Errorf("send proposal rpc: %w", err)
