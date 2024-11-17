@@ -15,7 +15,7 @@ const deployContractsOnSrcChain: DeployFunction = async function (
   const { deployer } = await hre.getNamedAccounts();
   console.log("Deploying with account:", deployer);
 
-  const axelarGatewayAddressLinea = "0xe432150cce91c13a887f7D836923d5597adD8E31";
+  const axelarGatewayAddressLinea = "0x4C955bE5E969F92198d69A756D367dD0510E69a1";
 
   const onramp =  await deploy("OnRampContract", {
     from: deployer,
@@ -34,6 +34,7 @@ const deployContractsOnSrcChain: DeployFunction = async function (
   });
   const oracleAddress = oracle.address;
   console.log("🚀 Oracle Contract Deployed at: ", oracleAddress);
+
 };
 
 export default deployContractsOnSrcChain;

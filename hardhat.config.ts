@@ -25,6 +25,7 @@ const config: HardhatUserConfig = {
       default: 0, // Use the first account as deployer
     },
   },
+  
   defaultNetwork: "calibration",
   networks: {
     calibration: {
@@ -39,9 +40,25 @@ const config: HardhatUserConfig = {
     coston2: {
       url: "https://rpc.ankr.com/flare_coston2",
       chainId: 114,
-      accounts: [deployerPrivateKey]
+      accounts: [deployerPrivateKey],
     }
+  },
+  etherscan: {
+    apiKey: {
+      'coston2': 'empty'
+    },
+    customChains: [
+      {
+        network: "coston2",
+        chainId: 114,
+        urls: {
+          apiURL: "https://coston2-explorer.flare.network/api",
+          browserURL: "https://coston2-explorer.flare.network"
+        }
+      }
+    ]
   }
+
 };
 
 export default config;

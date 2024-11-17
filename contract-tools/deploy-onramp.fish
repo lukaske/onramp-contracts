@@ -69,6 +69,7 @@ function deploy-onramp
 	lotus evm invoke $oracleIDAddr $callDataOracle
 
 	# Setup xchain config
+	# from now on
 	mkdir -p ~/.xchain
 
 	cd $LOTUS_EXEC_PATH
